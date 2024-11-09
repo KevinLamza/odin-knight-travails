@@ -8,35 +8,6 @@ if (process.env.NODE_ENV !== 'production') {
 
 // ---------------------- START YOUR CODE BELOW HERE
 
-// function findPath(start, end) {
-//   function recPath(start, end, e = -1, p = []) {
-//     let edges = e + 1;
-//     let path = p.map((x) => x);
-//     path.push(start);
-//     if (start === end) {
-//       // path.push(end);
-//       possiblePaths.push({ Edges: edges, Path: path });
-//       return;
-//     }
-//     if (edges >= 63) return;
-//     let possibleMoves = evaluateMoves(calculateMoves(start, end));
-//     // console.log(possibleMoves);
-
-//     // levelOrder ausprobieren, children queuen und langsam tiefer gehen;
-//     // recursiv ist dann quatsch, ich brauche eine queue;
-//     for (let move of possibleMoves) {
-//       recPath(move, end, edges, path);
-//     }
-//   }
-//   // function calculateMoves() {} -> move definition to here
-//   // function evaluateMoves() {} -> move definition to here
-//   let possiblePaths = [];
-//   // console.log(start);
-//   // console.log(end);
-//   recPath(start, end);
-//   console.log(possiblePaths);
-// }
-
 function calculateMoves(start) {
   if (Array.isArray(start) === false) throw new Error('Input not an array');
   if (start.length != 2)
@@ -67,8 +38,6 @@ function evaluateMoves(moves) {
   return legitMoves;
 }
 
-// findPath([0, 0], [2, 1]);
-
 function findPath(start, end) {
   if (
     start[0] < 0 ||
@@ -97,10 +66,19 @@ function findPath(start, end) {
   let possibleMoves = [];
 
   while (queueIndex < queue.length) {
-    whileLoops = whileLoops + 1;
-    if (whileLoops >= 63) {
-      console.log("Couldn't find a solution! Terminated after 63 loops.");
-      return;
+    // whileLoops = whileLoops + 1;
+    // if (whileLoops >= 63) {
+    //   console.log("Couldn't find a solution! Terminated after 63 loops.");
+    //   return;
+    // }
+
+    // skip loops where edges are higher than the ones of already found solutions
+    if (
+      currentlyShortestFoundSolution != null &&
+      queue[queueIndex]['edges'] >= currentlyShortestFoundSolution
+    ) {
+      queueIndex = queueIndex + 1;
+      continue;
     }
 
     // start position of current queue item matches with end -> log
@@ -118,16 +96,6 @@ function findPath(start, end) {
       ) {
         currentlyShortestFoundSolution = queue[queueIndex]['edges'];
       }
-      console.log(possibleSolutions);
-      console.log(currentlyShortestFoundSolution);
-    }
-
-    if (
-      currentlyShortestFoundSolution != null &&
-      queue[queueIndex]['edges'] + 1 > currentlyShortestFoundSolution
-    ) {
-      queueIndex = queueIndex + 1;
-      continue;
     }
 
     // calculate all possible moves, save to array
@@ -150,10 +118,12 @@ function findPath(start, end) {
     // move one forward in the queue
     queueIndex = queueIndex + 1;
   }
+  console.log(possibleSolutions);
+  console.log(currentlyShortestFoundSolution);
 }
 
 const equalsCheck = (a, b) => {
   return JSON.stringify(a) === JSON.stringify(b);
 };
 
-findPath([0, 0], [1, 2]);
+findPath([0, 0], [7, 7]);
