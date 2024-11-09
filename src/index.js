@@ -9,25 +9,32 @@ if (process.env.NODE_ENV !== 'production') {
 // ---------------------- START YOUR CODE BELOW HERE
 
 function findPath(start, end) {
-  function recPath(start, end, e = 0, p = []) {
+  function recPath(start, end, e = -1, p = []) {
     let edges = e + 1;
-    let path = p.push(start);
+    let path = p.map((x) => x);
+    path.push(start);
     if (start === end) {
-      path.push(end);
+      // path.push(end);
       possiblePaths.push({ Edges: edges, Path: path });
       return;
     }
-    let possibleMoves = calculateMoves(start, end);
-    possibleMoves = evaluateMoves(start, end);
+    if (edges >= 63) return;
+    let possibleMoves = evaluateMoves(calculateMoves(start, end));
+    // console.log(possibleMoves);
 
-    for (let move in possibleMoves) {
+    // levelOrder ausprobieren, children queuen und langsam tiefer gehen;
+    // recursiv ist dann quatsch, ich brauche eine queue;
+    for (let move of possibleMoves) {
       recPath(move, end, edges, path);
     }
   }
-  // function calculateMoves() {}
-  // function evaluateMoves() {}
+  // function calculateMoves() {} -> move definition to here
+  // function evaluateMoves() {} -> move definition to here
   let possiblePaths = [];
+  // console.log(start);
+  // console.log(end);
   recPath(start, end);
+  console.log(possiblePaths);
 }
 
 function calculateMoves(start) {
@@ -60,4 +67,6 @@ function evaluateMoves(moves) {
   return legitMoves;
 }
 
-console.log(evaluateMoves(calculateMoves([0, 0])));
+findPath([0, 0], [2, 1]);
+
+// console.log(evaluateMoves(calculateMoves([0, 0])));
