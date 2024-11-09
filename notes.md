@@ -19,3 +19,16 @@ function (start, end, e = 0, p = [])
   -2 -1
   -2 1
   -1 2
+
+
+  ein object
+  - das nächsten moves
+  - alle bisherigen moves
+  - anzahl der edges
+
+  immer wenn start = end
+  - push das object zu possible solutions
+  - update bisherigen shortest amount
+
+  alle anderen werden direkt return, wenn
+  über dem kürzesten
