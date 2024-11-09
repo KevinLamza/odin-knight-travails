@@ -120,6 +120,11 @@ const knightTravails = (function () {
     }
     console.log(possibleSolutions);
     console.log(currentlyShortestFoundSolution);
+    console.log(`You made it in ${currentlyShortestFoundSolution} turns!`);
+    console.log(`Your path is:`);
+    for (let move of possibleSolutions[0]['pathUntilHere']) {
+      console.log(move);
+    }
   };
 
   const equalsCheck = (a, b) => {
